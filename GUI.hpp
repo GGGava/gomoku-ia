@@ -7,7 +7,8 @@ class GUI {
 	void run();
 	bool getMode();
 	void buildBoard();
+	void printBoard(int ** board);
 
  private:
- 	Game *_game;
+ 	Game * _game;
 };
