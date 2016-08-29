@@ -1,6 +1,5 @@
 #include <iostream>
 #include "GUI.hpp"
-#include <time.h>
 
 GUI::GUI() {
 	_game = new Game(GUI::getMode());
@@ -13,9 +12,7 @@ GUI::~GUI() {
 void GUI::run() {
 	GUI::buildBoard();
 	srand(time(NULL));
-	int c = 0;
-	//while (_game->getStatus()) {
-	while (c < 1500) {
+	while (_game->getStatus()) {
 		int x, y;
 		
 		if (_game->getTurn()) {
@@ -24,12 +21,10 @@ void GUI::run() {
 			std::cout << "\nVez do Jogador 2" << std::endl;
 		}
 		
-		// std::cout << "Escolha uma casa do tabuleiro: \nDigite a coordenada X: ";
-		// std::cin >> x;
-		// std::cout << "Digite a coordenada Y: ";
-		// std::cin >> y;
-		x = rand() % 15;
-		y = rand() % 15;
+		std::cout << "Escolha uma casa do tabuleiro: \nDigite a coordenada X: ";
+		std::cin >> x;
+		std::cout << "Digite a coordenada Y: ";
+		std::cin >> y;
 		
 		system("clear");
 		
@@ -37,8 +32,6 @@ void GUI::run() {
 		GUI::printBoard(_game->getBoard());
 		
 		_game->changeTurn();
-		
-		c++;
 	}
 }
 
