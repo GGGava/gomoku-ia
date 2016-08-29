@@ -1,6 +1,7 @@
 #include "Game.hpp"
 
 Game::Game(bool mode){
+	status = true;
 	board = new int*[15];
 	int i;
 	int j;
@@ -18,4 +19,8 @@ Game::~Game(){
 
 int** Game::getBoard(){
 	return board;
+}
+
+bool getStatus(){
+	return status;
 }

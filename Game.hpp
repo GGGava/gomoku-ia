@@ -5,4 +5,5 @@ class Game {
 		int** getBoard();
 	private:
 		int** board;
+		bool status;
 };

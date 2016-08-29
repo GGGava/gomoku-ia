@@ -13,6 +13,10 @@ GUI::~GUI() {
 
 void GUI::run() {
 	GUI::buildBoard();
+
+	while(Game::getStatus()){
+		
+	}
 }
 
 bool GUI::getMode(){
@@ -29,7 +33,7 @@ void GUI::buildBoard(){
 	int** board = _game->getBoard();
 
 	std::cout << "\n\n Tabuleiro:" << std::endl;
-	
+
 	int i;
 	int j;
 	for (i = 0; i < 15; i++) {
