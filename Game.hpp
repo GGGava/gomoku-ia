@@ -9,6 +9,7 @@ class Game {
 		bool getMode();
 		void changeTurn();
 		void testEndGame();
+		bool isValidMove(int line, int column);
 
 	private:
 		int ** board;

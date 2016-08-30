@@ -77,6 +77,14 @@ void Game::testEndGame() {
 			}
 		}
 	}
+}
 
+bool Game::isValidMove(int line, int column) {
+	if (line > 14 || line < 0 || column > 14 || column < 0)
+		return false;
 
+	if (board[line][column] != 0)
+		return false;
+
+	return true;
 }

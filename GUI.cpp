@@ -90,18 +90,26 @@ void GUI::buildBoard() {
 
 void GUI::move(bool turn) {
 	std::pair <int,int> cord;
+	bool validMove = false;
 
-	if (turn) {
-		std::cout << "\nVez do Jogador 1" << std::endl;
-		cord = GUI::getPlayerMovement();
-	} else {
-		if (_game->getMode()) {
-			std::cout << "\nVez do Jogador 2" << std::endl;
+	while (!validMove) {
+		if (turn) {
+			std::cout << "\nVez do Jogador 1" << std::endl;
 			cord = GUI::getPlayerMovement();
-		}	else {
-			std::cout << "\nVez da IA" << std::endl;
-			cord = _ia->makeYourMove(_game->getBoard());
+		} else {
+			if (_game->getMode()) {
+				std::cout << "\nVez do Jogador 2" << std::endl;
+				cord = GUI::getPlayerMovement();
+			}	else {
+				std::cout << "\nVez da IA" << std::endl;
+				cord = _ia->makeYourMove(_game->getBoard());
+			}
 		}
+
+		validMove = _game->isValidMove(cord.first, cord.second);
+
+		if (!validMove)
+			std::cout << "ERRO: Jogada inválida!" << std::endl;
 	}
 
 	system("clear");
