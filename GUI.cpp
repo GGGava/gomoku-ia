@@ -29,7 +29,10 @@ void GUI::run() {
 	if (_game->getTurn())
 		std::cout << "\nJogador 1 ganhou!" << std::endl;
 	else
-		std::cout << "\nJogador 2 ganhou!" << std::endl;
+		if (_game->getMode())
+			std::cout << "\nJogador 2 ganhou!" << std::endl;
+		else
+			std::cout << "\nIA ganhou!" << std::endl;
 }
 
 bool GUI::getMode() {
