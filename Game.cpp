@@ -1,5 +1,4 @@
 #include "Game.hpp"
-#include <iostream>
 
 Game::Game(bool mode) {
 	status = true;
@@ -28,11 +27,11 @@ bool Game::getStatus() {
 	return status;
 }
 
-void Game::updateBoard(int x, int y, bool turn) {
+void Game::updateBoard(int line, int column, bool turn) {
 	if (turn)
-		board[y][x] = 1;
+		board[line][column] = 1;
 	else
-		board[y][x] = 2;
+		board[line][column] = 2;
 }
 
 bool Game::getTurn() {
@@ -48,26 +47,30 @@ bool Game::getMode() {
 }
 
 void Game::testEndGame() {
-	int i;
-	int j;
+	int i, j;
+
 	int comp = 1;
-	if (!turn){
+	if (!turn) {
 		comp = 2;
 	}
+
 	int contX = 0;
 	int contY = 0;
+
 	for (i = 0; i < 15 && status; i++){
 		for (j = 0; j < 15; j++){
-			if (board[i][j] == comp){
+			if (board[i][j] == comp) {
 				contX++;
 			} else {
 				contX = 0;
 			}
-			if (board[j][i] == comp){
+
+			if (board[j][i] == comp) {
 				contY++;
 			} else {
 				contY = 0;
 			}
+
 			if (contX == 5 || contY == 5){
 				status = false;
 				return;

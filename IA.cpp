@@ -1,8 +1,9 @@
 #include "IA.hpp"
-#include <iostream>
+#include <time.h>
+#include <stdlib.h>
 
 IA::IA() {
-
+	srand(time(NULL));
 }
 
 IA::~IA() {
@@ -10,5 +11,10 @@ IA::~IA() {
 }
 
 std::pair<int,int> IA::makeYourMove(int ** board){
-	std::cout << "NOT IMPLEMENTED :)" << std::endl;
+	std::pair <int,int> cord;
+
+	cord.first = rand() % 15;
+	cord.second = rand() % 15;
+
+	return cord;
 }

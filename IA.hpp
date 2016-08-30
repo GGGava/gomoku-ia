@@ -1,7 +1,7 @@
 #include <utility>
 
 class IA {
-	public:
+ public:
 	IA();
 	~IA();
 	std::pair<int,int> makeYourMove(int ** board);
