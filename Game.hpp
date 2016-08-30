@@ -8,7 +8,10 @@ class Game {
 		bool getTurn();
 		bool getMode();
 		void changeTurn();
-		void testEndGame();
+		void testEndGame(int line, int column, bool turn);
+		bool testHorizontal(int line, int column, int player);
+		bool testVertical(int line, int column, int player);
+		bool testDiagonal(int line, int column, int player);
 		bool isValidMove(int line, int column);
 
 	private:

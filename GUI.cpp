@@ -22,7 +22,6 @@ void GUI::run() {
 		GUI::move(_game->getTurn());
 
 		GUI::buildBoard();
-		_game->testEndGame();
 	}
 
 	std::cout << "\n--- FIM DE JOGO ---" << std::endl;
