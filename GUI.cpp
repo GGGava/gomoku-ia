@@ -1,8 +1,10 @@
 #include <iostream>
 #include "GUI.hpp"
+#include <utility>
 
 GUI::GUI() {
 	_game = new Game(GUI::getMode());
+	_ia = new IA();
 }
 
 GUI::~GUI() {
@@ -13,25 +15,19 @@ void GUI::run() {
 	GUI::buildBoard();
 	srand(time(NULL));
 	while (_game->getStatus()) {
+		_game->changeTurn();
 		int x, y;
 		
-		if (_game->getTurn()) {
-			std::cout << "\nVez do Jogador 1" << std::endl;
-		} else {
-			std::cout << "\nVez do Jogador 2" << std::endl;
-		}
-		
-		std::cout << "Escolha uma casa do tabuleiro: \nDigite a coordenada X: ";
-		std::cin >> x;
-		std::cout << "Digite a coordenada Y: ";
-		std::cin >> y;
-		
-		system("clear");
-		
-		_game->updateBoard(x, y, _game->getTurn());
-		GUI::printBoard(_game->getBoard());
-		
-		_game->changeTurn();
+		move(_game->getTurn());
+		buildBoard();
+		_game->Game::testEndGame();
+	}
+
+	//TESTE
+	if (_game->getTurn()) {
+		std::cout << "\nJogador 1 ganhou!" << std::endl;
+	} else {
+		std::cout << "\nJogador 2 ganhou!" << std::endl;
 	}
 }
 
@@ -43,7 +39,7 @@ bool GUI::getMode() {
 	
 	system("reset");
 	
-	if (mode == 0)
+	if (!mode)
 		std::cout << "Escolhido modo Humano vs IA" << std::endl;
 	else
 		std::cout << "Escolhido modo Humano vs Humano" << std::endl;
@@ -54,11 +50,6 @@ bool GUI::getMode() {
 void GUI::buildBoard() {
 	int ** board = _game->getBoard();
 	
-	printBoard(board);
-}
-
-void GUI::printBoard(int ** _board) {
-	int ** board = _board;
 	int i,j;
 
 	std::cout << "\n\n Tabuleiro:" << std::endl;
@@ -94,4 +85,33 @@ void GUI::printBoard(int ** _board) {
 		}
 		std::cout << std::endl << "    |" << std::endl;
 	}
+}
+
+void GUI::move(bool turn){
+	std::pair <int,int> cord;
+	if (turn) {
+		std::cout << "\nVez do Jogador 1" << std::endl;
+		cord = getPlayerMovement();
+	} else {
+		std::cout << "\nVez do Jogador 2" << std::endl;
+		if (_game->getMode()){
+			cord = getPlayerMovement();
+		} else {
+			_ia->makeYourMove(_game->getBoard());
+		}
+	}
+	
+	system("clear");
+	_game->updateBoard(cord.first, cord.second, _game->getTurn());
+}
+
+
+
+std::pair<int,int> GUI::getPlayerMovement(){
+	std::pair <int,int> cord;
+	std::cout << "Escolha uma casa do tabuleiro: \nDigite a coordenada X: ";
+	std::cin >> cord.first;
+	std::cout << "Digite a coordenada Y: ";
+	std::cin >> cord.second;
+	return cord;
 }

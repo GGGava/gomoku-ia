@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include "IA.hpp"
 
 class GUI {
  public:
@@ -7,8 +8,10 @@ class GUI {
 	void run();
 	bool getMode();
 	void buildBoard();
-	void printBoard(int ** board);
+	void move(bool turn);
+	std::pair<int,int> getPlayerMovement();
 
  private:
  	Game * _game;
+ 	IA* _ia;
 };
