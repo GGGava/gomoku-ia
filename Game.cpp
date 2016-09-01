@@ -16,6 +16,9 @@ Game::Game(bool mode) {
 }
 
 Game::~Game() {
+	for (int c = 0; c < 15; c++) {
+		delete board[c];
+	}
 	delete board;
 }
 
