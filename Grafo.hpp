@@ -1,5 +1,7 @@
+// Trabalho realizado por Gustavo Gava para a disciplina de Grafos
+
 #include "Vertice.hpp"
-#include <unordered_map> 
+#include <unordered_map>
 #include <iostream>
 
 class Grafo {
@@ -7,7 +9,7 @@ protected :
 	std::unordered_map<std::string, Vertice*> graf;
 	std::set<std::string> list;
 public :
-	
+
 	Grafo() {
 	}
 	void insere(std::string key) {
@@ -15,7 +17,7 @@ public :
 		Vertice * v1 = new Vertice();
 		graf[key] = v1;
 	}
-	
+
 	void conecta(std::string k1, std::string k2, int peso) {
 		if (graf.count(k1) == 1 && graf.count(k2) == 1) {
 			std::cout << k1 << " ligado com " << k2 << std::endl;
@@ -55,7 +57,7 @@ public :
 	}
 
 	int getGrau(std::string key){
-		if (graf.count(key) == 1)	
+		if (graf.count(key) == 1)
 			return getVertice(key)->grau();
 	}
 
@@ -65,7 +67,7 @@ public :
 		std::unordered_map<std::string, Vertice*>::iterator it;
 		for(it = graf.begin(); it != graf.end(); it++){
 			this->getVertice((*it).first)->remove(key);
-		}	
+		}
 		graf.erase(key);
 	}
 
