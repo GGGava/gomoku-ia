@@ -1,6 +1,11 @@
+#ifndef Element_HPP
+#define Element_HPP
+
+#include <list>
+
 class Element {
  public:
-   Element(int ** _board);
+   Element(int ** _board, std::pair<int,int> _move, bool _turn);
    ~Element();
    int searchNVertical(int line, int column, int player);
    int searchNHorizontal(int line, int column, int player);
@@ -12,6 +17,8 @@ class Element {
    int getN_AdvDoubles();
    int getN_AdvTriples();
    int getN_AdvQuadruples();
+   std::list<std::pair<int,int>>* getPossibleMoves();
+   int** getBoard();
  private:
    int ** board;
    int n_IADoubles;
@@ -21,3 +28,5 @@ class Element {
    int n_AdvTriples;
    int n_AdvQuadruples;
 };
+
+#endif

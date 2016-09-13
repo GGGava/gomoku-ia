@@ -1,13 +1,15 @@
 #include "Element.hpp"
 #include <algorithm>
 
-Element::Element(int ** _board) {
-  int i = 0;
-  int j = 0;
-
+Element::Element(int ** _board, std::pair<int,int> _move, bool _turn) {
   board = new int*[15];
 
   std::copy(&_board[0][0], &_board[0][0]+15*15,&board[0][0]);
+
+  if (_turn)
+    board[_move.first][_move.second] = 1;
+  else
+    board[_move.first][_move.second] = 2;
 
   n_IADoubles = 1;
   n_IATriples = 1;
@@ -20,6 +22,31 @@ Element::Element(int ** _board) {
 
 Element::~Element() {
   delete board;
+}
+
+int** Element::getBoard() {
+  return board;
+}
+
+std::list<std::pair<int,int>>* Element::getPossibleMoves() {
+  std::list<std::pair<int,int>>* possibleMoves = new std::list<std::pair<int,int>>;
+
+  int i = 0;
+  for (i; i < 15; i++) {
+    int j = 0;
+    for (j; j < 15; j++) {
+      if (board[i][j] == 0) {
+        std::pair<int,int> _possibleMove = std::make_pair(i,j);
+
+        if (i > 3 && i < 12 && j > 3 && j < 12)
+          possibleMoves->push_front(_possibleMove);
+        else
+          possibleMoves->push_back(_possibleMove);
+      }
+    }
+  }
+
+  return possibleMoves;
 }
 
 int Element::searchNVertical(int line, int column, int player) {
