@@ -1,35 +1,40 @@
 #include "Element.hpp"
 #include <algorithm>
+#include <string.h>
 
-Element::Element(int ** _board, std::pair<int,int> _move, bool _turn) {
-  board = new int*[15];
-
-  std::copy(&_board[0][0], &_board[0][0]+15*15,&board[0][0]);
+Element::Element(const Array& _board, std::pair<int,int> _move, bool _turn, std::array<int,6> counters) {
+  board = _board;
+  blockCounters = counters;
+  verifyBlock(_move, _turn);
 
   if (_turn)
     board[_move.first][_move.second] = 1;
   else
     board[_move.first][_move.second] = 2;
 
-  n_IADoubles = 1;
-  n_IATriples = 1;
-  n_IAQuadruples = 1;
+}
 
-  n_AdvDoubles = 1;
-  n_AdvTriples = 1;
-  n_AdvQuadruples = 1;
+Element::Element(const Array& _board) {
+  board = _board;
+  blockCounters[0] = 0;
+  blockCounters[1] = 0;
+  blockCounters[2] = 0;
+
+  blockCounters[3] = 0;
+  blockCounters[4] = 0;
+  blockCounters[5] = 0;
 }
 
 Element::~Element() {
-  delete board;
 }
 
-int** Element::getBoard() {
+std::array<std::array<int,15>,15> Element::getBoard() {
   return board;
 }
 
-std::list<std::pair<int,int>>* Element::getPossibleMoves() {
-  std::list<std::pair<int,int>>* possibleMoves = new std::list<std::pair<int,int>>;
+
+std::list<std::pair<int,int>> Element::getPossibleMoves() {
+  std::list<std::pair<int,int>> possibleMoves;// = new std::list<std::pair<int,int>>;
 
   int i = 0;
   for (i; i < 15; i++) {
@@ -39,9 +44,9 @@ std::list<std::pair<int,int>>* Element::getPossibleMoves() {
         std::pair<int,int> _possibleMove = std::make_pair(i,j);
 
         if (i > 3 && i < 12 && j > 3 && j < 12)
-          possibleMoves->push_front(_possibleMove);
+          possibleMoves.push_front(_possibleMove);
         else
-          possibleMoves->push_back(_possibleMove);
+          possibleMoves.push_back(_possibleMove);
       }
     }
   }
@@ -134,25 +139,71 @@ int Element::searchNDiagonal2(int line, int column, int player) {
 }
 
 int Element::getN_IADoubles() {
-  return n_IADoubles;
+  return blockCounters[0];
 }
 
 int Element::getN_IATriples() {
-  return n_IATriples;
+  return blockCounters[1];
 }
 
 int Element::getN_IAQuadruples() {
-  return n_IAQuadruples;
+  return blockCounters[2];
 }
 
 int Element::getN_AdvDoubles() {
-  return n_AdvDoubles;
+  return blockCounters[3];
 }
 
 int Element::getN_AdvTriples() {
-  return n_AdvTriples;
+  return blockCounters[4];
 }
 
 int Element::getN_AdvQuadruples() {
-  return n_AdvQuadruples;
+  return blockCounters[5];
+}
+
+void Element::verifyBlock(std::pair<int,int> cord, bool player){
+	int doubles, triples,quadruples;
+	int playerN = (player) ? 2 : 1;
+	if(player){
+		doubles = 0;
+		triples = 1;
+		quadruples = 2;
+	} else {
+		doubles = 3;
+		triples = 4;
+		quadruples = 5;
+	}
+	switch(searchNVertical(cord.first, cord.second, playerN)){
+		case 2: blockCounters[doubles] += 1; break;
+		case 3: blockCounters[triples] += 1; blockCounters[doubles] -= 1; break; 
+		case 4: blockCounters[quadruples] += 1; blockCounters[triples] -= 1; break; //está errado para alguns casos, como formar uma quadrupla de uma dupla e uma peça só 
+		case 5: leaf = true;
+	}
+	switch(searchNHorizontal(cord.first, cord.second, playerN)){
+		case 2: blockCounters[doubles] += 1; break;
+		case 3: blockCounters[triples] += 1; blockCounters[doubles] -= 1; break; 
+		case 4: blockCounters[quadruples] += 1; blockCounters[triples] -= 1; break; //está errado para alguns casos, como formar uma quadrupla de uma dupla e uma peça só 
+		case 5: leaf = true;
+	}
+	switch(searchNDiagonal1(cord.first, cord.second, playerN)){
+		case 2: blockCounters[doubles] += 1; break;
+		case 3: blockCounters[triples] += 1; blockCounters[doubles] -= 1; break; 
+		case 4: blockCounters[quadruples] += 1; blockCounters[triples] -= 1; break; //está errado para alguns casos, como formar uma quadrupla de uma dupla e uma peça só 
+		case 5: leaf = true;
+	}
+	switch(searchNDiagonal2(cord.first, cord.second, player)){
+		case 2: blockCounters[doubles] += 1; break;
+		case 3: blockCounters[triples] += 1; blockCounters[doubles] -= 1; break; 
+		case 4: blockCounters[quadruples] += 1; blockCounters[triples] -= 1; break; //está errado para alguns casos, como formar uma quadrupla de uma dupla e uma peça só 
+		case 5: leaf = true;
+	}
+}
+
+std::array<int,6> Element::getCounters(){
+	return blockCounters;
+}
+
+bool Element::isLeaf(){
+	return leaf;
 }

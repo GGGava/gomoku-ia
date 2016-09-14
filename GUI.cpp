@@ -1,5 +1,6 @@
 #include <iostream>
 #include "GUI.hpp"
+#include <array>
 
 GUI::GUI() {
 	system("clear");
@@ -51,7 +52,7 @@ bool GUI::getMode() {
 }
 
 void GUI::buildBoard() {
-	int ** board = _game->getBoard();
+	auto brd = _game->getBoard();
 
 	int i,j;
 
@@ -74,7 +75,7 @@ void GUI::buildBoard() {
 
 		std::cout << " ";
 		for (j = 0; j < 15; j++){
-			switch (board[i][j]) {
+			switch (brd[i][j]) {
 				case 0:
 					std::cout << "[]   ";
 					break;
@@ -111,7 +112,7 @@ void GUI::move(bool turn) {
 		validMove = _game->isValidMove(cord.first, cord.second);
 
 		if (!validMove)
-			std::cout << "ERRO: Jogada inválida!" << std::endl;
+			std::cout << cord.first << "  " << cord.second << std::endl;
 	}
 
 	system("clear");

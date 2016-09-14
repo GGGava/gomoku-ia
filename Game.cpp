@@ -5,25 +5,27 @@ Game::Game(bool mode) {
 	turn = false;
 	_mode = mode;
 
-	board = new int*[15];
+	//board = new int*[15];
+	
+
 	int i, j;
 	for (i = 0; i < 15; i++) {
-		board[i] = new int[15];
+		//board[i] = new int[15];
 		for (j = 0; j < 15; j++) {
-			board[i][j] = 0;
+			brd[i][j] = 0;
 		}
 	}
 }
 
 Game::~Game() {
-	for (int c = 0; c < 15; c++) {
-		delete board[c];
+	/*for (int c = 0; c < 15; c++) {
+		delete brd[c];
 	}
-	delete board;
+	delete brd;*/
 }
 
-int ** Game::getBoard() {
-	return board;
+std::array<std::array<int,15>,15> Game::getBoard() {
+	return brd;
 }
 
 bool Game::getStatus() {
@@ -32,9 +34,9 @@ bool Game::getStatus() {
 
 void Game::updateBoard(int line, int column, bool turn) {
 	if (turn)
-		board[line][column] = 1;
+		brd[line][column] = 1;
 	else
-		board[line][column] = 2;
+		brd[line][column] = 2;
 		
 		Game::testEndGame(line, column, turn);
 }
@@ -55,7 +57,7 @@ bool Game::testHorizontal(int line, int column, int player) {
 	int x = line - 1;
 	int cont = 1;
 	
-	while (x >= 0 && board[x][column] == player) {
+	while (x >= 0 && brd[x][column] == player) {
 		cont++;
 		if (cont == 5)
 			return true;
@@ -64,7 +66,7 @@ bool Game::testHorizontal(int line, int column, int player) {
 	
 	x = line + 1;
 	
-	while (x <= 14 && board[x][column] == player) {
+	while (x <= 14 && brd[x][column] == player) {
 		cont++;
 		if (cont == 5)
 			return true;
@@ -78,7 +80,7 @@ bool Game::testVertical(int line, int column, int player) {
 	int y = column - 1;
 	int cont = 1;
 	
-	while (y >= 0 && board[line][y] == player) {
+	while (y >= 0 && brd[line][y] == player) {
 		cont++;
 		if (cont == 5)
 			return true;
@@ -87,7 +89,7 @@ bool Game::testVertical(int line, int column, int player) {
 	
 	y = column + 1;
 	
-	while (y <= 14 && board[line][y] == player) {
+	while (y <= 14 && brd[line][y] == player) {
 			cont++;
 			if (cont == 5)
 				return true;
@@ -102,7 +104,7 @@ bool Game::testDiagonal(int line, int column, int player) {
 	int y = column - 1;
 	int cont = 1;
 	
-	while (x >= 0 && y >= 0 && board[x][y] == player) {
+	while (x >= 0 && y >= 0 && brd[x][y] == player) {
 		cont++;
 		if (cont == 5)
 			return true;
@@ -113,7 +115,7 @@ bool Game::testDiagonal(int line, int column, int player) {
 	x = line + 1;
 	y = column + 1;
 	
-	while (x <= 14 && y <= 14 && board[x][y] == player) {
+	while (x <= 14 && y <= 14 && brd[x][y] == player) {
 		cont++;
 		if (cont == 5)
 			return true;
@@ -126,7 +128,7 @@ bool Game::testDiagonal(int line, int column, int player) {
 	x = line - 1;
 	y = column + 1;
 	
-	while (x >= 0 && y <= 14 && board[x][y] == player) {
+	while (x >= 0 && y <= 14 && brd[x][y] == player) {
 		cont++;
 		if (cont == 5)
 			return true;
@@ -137,7 +139,7 @@ bool Game::testDiagonal(int line, int column, int player) {
 	x = line + 1;
 	y = column - 1;
 	
-	while (x <= 14 && y >= 0 && board[x][y] == player) {
+	while (x <= 14 && y >= 0 && brd[x][y] == player) {
 		cont++;
 		if (cont == 5)
 			return true;
@@ -162,7 +164,7 @@ void Game::testEndGame(int line, int column, bool turn) {
 
 bool Game::isValidMove(int line, int column) {
 	if (line <= 14 && line >= 0 && column <= 14 && column >= 0) {
-		if (board[line][column] == 0) {
+		if (brd[line][column] == 0) {
 			return true;
 		}
 	}

@@ -2,10 +2,14 @@
 #define Element_HPP
 
 #include <list>
+#include <iostream>
+#include <array>
 
 class Element {
  public:
-   Element(int ** _board, std::pair<int,int> _move, bool _turn);
+   using Array = std::array<std::array<int,15>,15>;
+   Element(const Array& _board, std::pair<int,int> _move, bool _turn, std::array<int,6> counters);
+   Element(const Array& _board);
    ~Element();
    int searchNVertical(int line, int column, int player);
    int searchNHorizontal(int line, int column, int player);
@@ -17,16 +21,22 @@ class Element {
    int getN_AdvDoubles();
    int getN_AdvTriples();
    int getN_AdvQuadruples();
-   std::list<std::pair<int,int>>* getPossibleMoves();
-   int** getBoard();
+   std::array<int,6> getCounters();
+   void verifyBlock(std::pair<int,int> cord, bool player);
+   std::list<std::pair<int,int>> getPossibleMoves();
+   std::array<std::array<int,15>,15> getBoard();
+   bool isLeaf();
+
  private:
-   int ** board;
-   int n_IADoubles;
+   Array board;
+   std::array<int,6> blockCounters;
+   bool leaf = false;
+   /*int n_IADoubles;
    int n_IATriples;
    int n_IAQuadruples;
    int n_AdvDoubles;
    int n_AdvTriples;
-   int n_AdvQuadruples;
+   int n_AdvQuadruples;*/
 };
 
 #endif

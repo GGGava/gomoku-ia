@@ -1,8 +1,9 @@
+#include <array>
 class Game {
 	public:
 		Game(bool mode);
 		~Game();
-		int ** getBoard();
+		std::array<std::array<int,15>,15> getBoard();
 		bool getStatus();
 		void updateBoard(int line, int column, bool turn);
 		bool getTurn();
@@ -19,4 +20,6 @@ class Game {
 		bool status;
 		bool turn;
 		bool _mode;
+
+		std::array<std::array<int,15>,15> brd;
 };
