@@ -3,6 +3,7 @@
 
 #include <list>
 #include <array>
+#include <iostream>
 
 class Element {
  public:
@@ -26,6 +27,16 @@ class Element {
    std::list<std::pair<int,int>> getPossibleMoves();
    std::array<std::array<int,15>,15> getBoard();
    bool isLeaf();
+
+   void printBoard() {
+     std::cout << std::endl;
+     for(int i = 0; i < 15; i++){
+       for(int j = 0; j < 15; j++){
+         std::cout << board[i][j];
+       }
+       std::cout << std::endl;
+     }
+   }
 
  private:
    Array board;

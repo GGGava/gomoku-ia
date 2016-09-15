@@ -31,12 +31,13 @@ int IA::heuristic(Element e) {
 									 + TRIPLEWEIGHT * e.getN_AdvTriples()
 									 + QUADRUPLEWEIGHT * e.getN_AdvQuadruples());
 
-	return attackValue;
+	return attackValue - defenseValue;
 }
 
 int IA::minimax(Element e, int level, bool player, int alpha, int beta) {
-	if (false) {
-		return this->utility(level);
+	if (e.isLeaf()) {
+		//e.printBoard();
+		return this->utility(level, player);
 	} else if (level == MAX) {
 		return this->heuristic(e);
 	}
@@ -45,9 +46,9 @@ int IA::minimax(Element e, int level, bool player, int alpha, int beta) {
 
 	if (!player) {
 		for (auto it = children.begin(); it != children.end(); ++it) {
-			Element newElement(e.getBoard(),*it, !player, e.getCounters());
+			Element newElement(e.getBoard(),*it, false, e.getCounters());
 
-			int score = minimax(newElement, level + 1, !player, alpha, beta);
+			int score = minimax(newElement, level + 1, true, alpha, beta);
 
 			if (score > alpha) {
 				alpha = score;
@@ -63,9 +64,9 @@ int IA::minimax(Element e, int level, bool player, int alpha, int beta) {
 
 	else{
 		for (auto it = children.begin(); it != children.end(); ++it) {
-			Element newElement(e.getBoard(), *it, !player, e.getCounters());
+			Element newElement(e.getBoard(), *it, true, e.getCounters());
 
-			int score = minimax(newElement, level + 1, !player, alpha, beta);
+			int score = minimax(newElement, level + 1, false, alpha, beta);
 
 			if (score < beta) {
 				beta = score;
@@ -90,7 +91,7 @@ std::pair<int,int> IA::minimaxStart(Element e){
 	for (auto it = children.begin(); it != children.end(); ++it) {
 		Element newElement(e.getBoard(),(*it), false, e.getCounters());
 
-		int score = minimax(newElement, 1, false, alpha, beta);
+		int score = minimax(newElement, 1, true, alpha, beta);
 
 		if (score > alpha) {
 			alpha = score;
@@ -106,6 +107,8 @@ std::pair<int,int> IA::minimaxStart(Element e){
 	return ret;
 }
 
-int IA::utility(int level) {
-	return 32 * QUADRUPLEWEIGHT * (MAX/level);
+int IA::utility(int level, bool player) {
+	if (player)
+		return 32 * QUADRUPLEWEIGHT * (MAX/level);
+	return -32 * QUADRUPLEWEIGHT * (MAX/level);
 }

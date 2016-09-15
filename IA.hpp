@@ -10,7 +10,7 @@ class IA {
   int heuristic(Element e);
   int minimax(Element e, int level, bool player, int alpha, int beta);
   std::pair<int,int> minimaxStart(Element e);
-  int utility(int level);
+  int utility(int level, bool player);
 
  private:
 

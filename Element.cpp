@@ -41,7 +41,7 @@ std::list<std::pair<int,int>> Element::getPossibleMoves() {
       if (board[i][j] == 0) {
         std::pair<int,int> _possibleMove = std::make_pair(i,j);
 
-        if (i > 3 && i < 12 && j > 3 && j < 12)
+        if (i > 4 && i < 11 && j > 4 && j < 11)
           possibleMoves.push_front(_possibleMove);
         else
           possibleMoves.push_back(_possibleMove);
@@ -161,7 +161,7 @@ int Element::getN_AdvQuadruples() {
 }
 
 void Element::verifyBlock(std::pair<int,int> cord, bool player){
-	int playerN = (player) ? 2 : 1;
+	int playerN = (player) ? 1 : 2;
 
 	updateCounters(searchNVertical(cord.first, cord.second, playerN), player);
 	updateCounters(searchNHorizontal(cord.first, cord.second, playerN), player);
@@ -172,7 +172,7 @@ void Element::verifyBlock(std::pair<int,int> cord, bool player){
 void Element::updateCounters(int nBlocks, bool player) {
 	int doubles, triples,quadruples;
 
-	if (player) {
+	if (!player) {
 		doubles = 0;
 		triples = 1;
 		quadruples = 2;
@@ -190,9 +190,9 @@ void Element::updateCounters(int nBlocks, bool player) {
 	} else if (nBlocks == 4) {
 		blockCounters[quadruples] += 1;
 		 blockCounters[triples] -= 1;
-	} //else if (nBlocks == 5) {
-		//leaf = true;
-	//}
+	} else if (nBlocks == 5) {
+		leaf = true;
+	}
 }
 
 std::array<int,6> Element::getCounters() {
