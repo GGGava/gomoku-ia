@@ -1,6 +1,4 @@
 #include "Element.hpp"
-#include <algorithm>
-#include <string.h>
 
 Element::Element(const Array& _board, std::pair<int,int> _move, bool _turn, std::array<int,6> counters) {
   board = _board;
@@ -11,11 +9,11 @@ Element::Element(const Array& _board, std::pair<int,int> _move, bool _turn, std:
     board[_move.first][_move.second] = 1;
   else
     board[_move.first][_move.second] = 2;
-
 }
 
 Element::Element(const Array& _board) {
   board = _board;
+
   blockCounters[0] = 0;
   blockCounters[1] = 0;
   blockCounters[2] = 0;
@@ -34,7 +32,7 @@ std::array<std::array<int,15>,15> Element::getBoard() {
 
 
 std::list<std::pair<int,int>> Element::getPossibleMoves() {
-  std::list<std::pair<int,int>> possibleMoves;// = new std::list<std::pair<int,int>>;
+  std::list<std::pair<int,int>> possibleMoves;
 
   int i = 0;
   for (i; i < 15; i++) {
@@ -163,9 +161,18 @@ int Element::getN_AdvQuadruples() {
 }
 
 void Element::verifyBlock(std::pair<int,int> cord, bool player){
-	int doubles, triples,quadruples;
 	int playerN = (player) ? 2 : 1;
-	if(player){
+
+	updateCounters(searchNVertical(cord.first, cord.second, playerN), player);
+	updateCounters(searchNHorizontal(cord.first, cord.second, playerN), player);
+	updateCounters(searchNDiagonal1(cord.first, cord.second, playerN), player);
+	updateCounters(searchNDiagonal2(cord.first, cord.second, playerN), player);
+}
+
+void Element::updateCounters(int nBlocks, bool player) {
+	int doubles, triples,quadruples;
+
+	if (player) {
 		doubles = 0;
 		triples = 1;
 		quadruples = 2;
@@ -174,36 +181,24 @@ void Element::verifyBlock(std::pair<int,int> cord, bool player){
 		triples = 4;
 		quadruples = 5;
 	}
-	switch(searchNVertical(cord.first, cord.second, playerN)){
-		case 2: blockCounters[doubles] += 1; break;
-		case 3: blockCounters[triples] += 1; blockCounters[doubles] -= 1; break; 
-		case 4: blockCounters[quadruples] += 1; blockCounters[triples] -= 1; break; //está errado para alguns casos, como formar uma quadrupla de uma dupla e uma peça só 
-		case 5: leaf = true;
-	}
-	switch(searchNHorizontal(cord.first, cord.second, playerN)){
-		case 2: blockCounters[doubles] += 1; break;
-		case 3: blockCounters[triples] += 1; blockCounters[doubles] -= 1; break; 
-		case 4: blockCounters[quadruples] += 1; blockCounters[triples] -= 1; break; //está errado para alguns casos, como formar uma quadrupla de uma dupla e uma peça só 
-		case 5: leaf = true;
-	}
-	switch(searchNDiagonal1(cord.first, cord.second, playerN)){
-		case 2: blockCounters[doubles] += 1; break;
-		case 3: blockCounters[triples] += 1; blockCounters[doubles] -= 1; break; 
-		case 4: blockCounters[quadruples] += 1; blockCounters[triples] -= 1; break; //está errado para alguns casos, como formar uma quadrupla de uma dupla e uma peça só 
-		case 5: leaf = true;
-	}
-	switch(searchNDiagonal2(cord.first, cord.second, player)){
-		case 2: blockCounters[doubles] += 1; break;
-		case 3: blockCounters[triples] += 1; blockCounters[doubles] -= 1; break; 
-		case 4: blockCounters[quadruples] += 1; blockCounters[triples] -= 1; break; //está errado para alguns casos, como formar uma quadrupla de uma dupla e uma peça só 
-		case 5: leaf = true;
-	}
+
+	if (nBlocks == 2) {
+		blockCounters[doubles] += 1;
+	} else if (nBlocks == 3) {
+		blockCounters[triples] += 1;
+		blockCounters[doubles] -= 1;
+	} else if (nBlocks == 4) {
+		blockCounters[quadruples] += 1;
+		 blockCounters[triples] -= 1;
+	} //else if (nBlocks == 5) {
+		//leaf = true;
+	//}
 }
 
-std::array<int,6> Element::getCounters(){
+std::array<int,6> Element::getCounters() {
 	return blockCounters;
 }
 
-bool Element::isLeaf(){
+bool Element::isLeaf() {
 	return leaf;
 }

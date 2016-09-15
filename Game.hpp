@@ -1,4 +1,5 @@
 #include <array>
+
 class Game {
 	public:
 		Game(bool mode);
@@ -16,10 +17,8 @@ class Game {
 		bool isValidMove(int line, int column);
 
 	private:
-		int ** board;
 		bool status;
 		bool turn;
 		bool _mode;
-
 		std::array<std::array<int,15>,15> brd;
 };

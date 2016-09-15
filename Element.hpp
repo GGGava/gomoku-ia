@@ -2,7 +2,6 @@
 #define Element_HPP
 
 #include <list>
-#include <iostream>
 #include <array>
 
 class Element {
@@ -23,6 +22,7 @@ class Element {
    int getN_AdvQuadruples();
    std::array<int,6> getCounters();
    void verifyBlock(std::pair<int,int> cord, bool player);
+   void updateCounters(int nBlocks, bool player);
    std::list<std::pair<int,int>> getPossibleMoves();
    std::array<std::array<int,15>,15> getBoard();
    bool isLeaf();
@@ -31,12 +31,6 @@ class Element {
    Array board;
    std::array<int,6> blockCounters;
    bool leaf = false;
-   /*int n_IADoubles;
-   int n_IATriples;
-   int n_IAQuadruples;
-   int n_AdvDoubles;
-   int n_AdvTriples;
-   int n_AdvQuadruples;*/
 };
 
 #endif

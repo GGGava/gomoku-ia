@@ -1,9 +1,4 @@
 #include "IA.hpp"
-#include "Graph.hpp"
-#include <time.h>
-#include <stdlib.h>
-#include <string.h>
-#include <array>
 
 #define DOUBLEWEIGHT 16
 #define TRIPLEWEIGHT 64
@@ -12,13 +7,10 @@
 #define DEFENSECONSTANT 1
 #define MAX 4
 
-
 IA::IA() {
-	srand(time(NULL));
 }
 
 IA::~IA() {
-//	delete board;
 }
 
 std::pair<int,int> IA::makeYourMove(Array _board) {
@@ -43,41 +35,47 @@ int IA::heuristic(Element e) {
 }
 
 int IA::minimax(Element e, int level, bool player, int alpha, int beta) {
-	if(e.isLeaf()){
+	if (false) {
 		return this->utility(level);
 	} else if (level == MAX) {
 		return this->heuristic(e);
-	} 
-
+	}
 
 	std::list<std::pair<int,int>> children = e.getPossibleMoves();
-	if (!player){ //vez da IA, nao lembro qual o valor correto
-		for(std::list<std::pair<int,int>>::iterator it = children.begin(); it != children.end(); ++it){
+
+	if (!player) {
+		for (auto it = children.begin(); it != children.end(); ++it) {
 			Element newElement(e.getBoard(),*it, !player, e.getCounters());
-			
+
 			int score = minimax(newElement, level + 1, !player, alpha, beta);
-			if (score > alpha){
+
+			if (score > alpha) {
 				alpha = score;
-			} 
-			if (alpha >= beta){
+			}
+
+			if (alpha >= beta) {
 				break;
 			}
 		}
+
 		return alpha;
 	}
 
 	else{
-		for(std::list<std::pair<int,int>>::iterator it = children.begin(); it != children.end(); ++it){
+		for (auto it = children.begin(); it != children.end(); ++it) {
 			Element newElement(e.getBoard(), *it, !player, e.getCounters());
+
 			int score = minimax(newElement, level + 1, !player, alpha, beta);
 
-			if (score < beta){
+			if (score < beta) {
 				beta = score;
-			} 
-			if (alpha >= beta){
+			}
+
+			if (alpha >= beta) {
 				break;
 			}
 		}
+
 		return beta;
 	}
 }
@@ -85,23 +83,29 @@ int IA::minimax(Element e, int level, bool player, int alpha, int beta) {
 std::pair<int,int> IA::minimaxStart(Element e){
 	std::list<std::pair<int,int>> children = e.getPossibleMoves();
 	std::pair<int,int> ret;
+
 	int alpha = -1000000;
 	int beta = 1000000;
-	for(std::list<std::pair<int,int>>::iterator it = children.begin(); it != children.end(); ++it){
+
+	for (auto it = children.begin(); it != children.end(); ++it) {
 		Element newElement(e.getBoard(),(*it), false, e.getCounters());
+
 		int score = minimax(newElement, 1, false, alpha, beta);
-		if (score > alpha){
+
+		if (score > alpha) {
 			alpha = score;
 			ret = *it;
-		} 
-		if (alpha >= beta){
+		}
+
+		if (alpha >= beta) {
 			break;
 		}
 	}
+
 	std::cout << "Heuristica : " << alpha << std::endl;
 	return ret;
 }
 
 int IA::utility(int level) {
-	return 32*QUADRUPLEWEIGHT*(MAX/level);
+	return 32 * QUADRUPLEWEIGHT * (MAX/level);
 }
