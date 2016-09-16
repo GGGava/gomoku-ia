@@ -88,6 +88,12 @@ std::pair<int,int> IA::minimaxStart(Element e){
 	int alpha = -1000000;
 	int beta = 1000000;
 
+	if (children.size() == 225) {
+		ret.first = 7;
+		ret.second = 7;
+		return ret;
+	}
+
 	for (auto it = children.begin(); it != children.end(); ++it) {
 		Element newElement(e.getBoard(),(*it), false, e.getCounters());
 
