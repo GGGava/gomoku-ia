@@ -18,11 +18,12 @@ void GUI::run() {
 	GUI::buildBoard();
 
 	while (_game->getStatus()) {
-		_game->changeTurn();
 
 		GUI::move(_game->getTurn());
 
 		GUI::buildBoard();
+
+		_game->changeTurn();
 	}
 
 	std::cout << "\n--- FIM DE JOGO ---" << std::endl;
@@ -96,7 +97,7 @@ void GUI::move(bool turn) {
 	bool validMove = false;
 
 	while (!validMove) {
-		if (!turn) {
+		if (turn) {
 			std::cout << "\nVez do Jogador 1" << std::endl;
 			cord = GUI::getPlayerMovement();
 		} else {
