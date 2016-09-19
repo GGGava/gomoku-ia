@@ -5,7 +5,7 @@
 #define QUADRUPLEWEIGHT 256
 #define ATTACKCONSTANT 1
 #define DEFENSECONSTANT 1
-#define MAX 4
+#define MAX 3
 
 IA::IA() {
 }
