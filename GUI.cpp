@@ -7,11 +7,13 @@ GUI::GUI() {
 
 	_game = new Game(GUI::getMode());
 	_ia = new IA();
+	_ia2 = new IA();
 }
 
 GUI::~GUI() {
  delete _game;
  delete _ia;
+ delete _ia2;
 }
 
 void GUI::run() {
@@ -27,7 +29,7 @@ void GUI::run() {
 
 	std::cout << "\n--- FIM DE JOGO ---" << std::endl;
 	if (_game->getTurn())
-		std::cout << "\nJogador 1 ganhou!" << std::endl;
+		std::cout << "\nIA 2 ganhou!" << std::endl;
 	else
 		if (_game->getMode())
 			std::cout << "\nJogador 2 ganhou!" << std::endl;
@@ -98,7 +100,8 @@ void GUI::move(bool turn) {
 	while (!validMove) {
 		if (!turn) {
 			std::cout << "\nVez do Jogador 1" << std::endl;
-			cord = GUI::getPlayerMovement();
+			cord = _ia2->makeYourMove(_game->getBoard());
+			//cord = GUI::getPlayerMovement();
 		} else {
 			if (_game->getMode()) {
 				std::cout << "\nVez do Jogador 2" << std::endl;

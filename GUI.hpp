@@ -14,4 +14,5 @@ class GUI {
  private:
  	Game * _game;
  	IA* _ia;
+	IA* _ia2;
 };
