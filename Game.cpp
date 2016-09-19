@@ -2,7 +2,7 @@
 
 Game::Game(bool mode) {
 	status = true;
-	turn = true;
+	turn = false;
 	_mode = mode;
 
 	int i, j;
