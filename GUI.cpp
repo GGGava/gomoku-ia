@@ -5,7 +5,8 @@
 GUI::GUI() {
 	system("clear");
 
-	_game = new Game(GUI::getMode(), GUI::getFirst());
+	bool gameMode = GUI::getMode();
+	_game = new Game(gameMode, GUI::getFirst(gameMode));
 	_ia = new IA();
 }
 
@@ -27,7 +28,7 @@ void GUI::run() {
 	}
 
 	std::cout << "\n--- FIM DE JOGO ---" << std::endl;
-	if (_game->getTurn())
+	if (!_game->getTurn())
 		std::cout << "\nJogador 1 ganhou!" << std::endl;
 	else
 		if (_game->getMode())
@@ -52,15 +53,19 @@ bool GUI::getMode() {
 	return mode;
 }
 
-bool GUI::getFirst() {
-	bool mode;
+bool GUI::getFirst(bool gameMode) {
+	if (!gameMode) {
+		bool mode;
 
-	std::cout << "Quem começará?\n (0) IA\n (1) Player" << std::endl;
-	std::cin >> mode;
+		std::cout << "Quem começará?\n (0) IA\n (1) Player" << std::endl;
+		std::cin >> mode;
 
-	system("clear");
+		system("clear");
 
-	return mode;
+		return mode;
+	}
+
+	return 1;
 }
 
 void GUI::buildBoard() {
@@ -124,11 +129,13 @@ void GUI::move(bool turn) {
 		validMove = _game->isValidMove(cord.first, cord.second);
 
 		if (!validMove)
-			std::cout << cord.first << "  " << cord.second << std::endl;
+			std::cout << "\033[1;31mMovimento Inválido!\033[0m" << std::endl;
 	}
 
 	system("clear");
 	_game->updateBoard(cord.first, cord.second, _game->getTurn());
+
+	std::cout << "\033[1;32mÚltima Jogada: " << cord.first << "," << cord.second << "\033[0m";
 }
 
 

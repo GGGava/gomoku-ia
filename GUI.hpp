@@ -7,7 +7,7 @@ class GUI {
 	~GUI();
 	void run();
 	bool getMode();
-	bool getFirst();
+	bool getFirst(bool gameMode);
 	void buildBoard();
 	void move(bool turn);
 	std::pair<int,int> getPlayerMovement();
