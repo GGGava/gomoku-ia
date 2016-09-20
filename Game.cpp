@@ -1,8 +1,8 @@
 #include "Game.hpp"
 
-Game::Game(bool mode) {
+Game::Game(bool mode, bool first) {
 	status = true;
-	turn = false;
+	turn = first;
 	_mode = mode;
 
 	int i, j;

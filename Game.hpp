@@ -2,7 +2,7 @@
 
 class Game {
 	public:
-		Game(bool mode);
+		Game(bool mode, bool first);
 		~Game();
 		std::array<std::array<int,15>,15> getBoard();
 		bool getStatus();

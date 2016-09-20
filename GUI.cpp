@@ -5,7 +5,7 @@
 GUI::GUI() {
 	system("clear");
 
-	_game = new Game(GUI::getMode());
+	_game = new Game(GUI::getMode(), GUI::getFirst());
 	_ia = new IA();
 }
 
@@ -48,6 +48,17 @@ bool GUI::getMode() {
 		std::cout << "Escolhido modo Player vs IA" << std::endl;
 	else
 		std::cout << "Escolhido modo Player vs Player" << std::endl;
+
+	return mode;
+}
+
+bool GUI::getFirst() {
+	bool mode;
+
+	std::cout << "Quem começará?\n (0) IA\n (1) Player" << std::endl;
+	std::cin >> mode;
+
+	system("clear");
 
 	return mode;
 }
