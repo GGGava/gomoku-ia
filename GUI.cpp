@@ -100,7 +100,11 @@ void GUI::buildBoard() {
 					std::cout << "\033[1;31mP1   \033[0m";
 					break;
 				case 2:
-					std::cout << "\033[1;34mP2   \033[0m";
+					if (_game->getMode()) {
+						std::cout << "\033[1;34mP2   \033[0m";
+					} else {
+						std::cout << "\033[1;34mIA   \033[0m";
+					}
 					break;
 			}
 		}
